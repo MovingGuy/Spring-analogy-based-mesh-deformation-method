@@ -1,0 +1,16 @@
+meshPoint,meshElement=deepcopy(completePoints),deepcopy(completeMesh)
+MoveBDYPoint=[meshPoint[3]]
+fixedBDYPoint=[meshPoint[1],meshPoint[2]]
+movingPara=[0,-5.5]
+freeMeshLabel=1
+showWholeMesh(meshPoint,meshElement,color="#5C565C",cover=false,linewidth=0.3)
+#=======单步平移调试==========#
+#预变形
+meshPoint_init,meshElement_init,u_init,K1_Init,K2_Init,K3_Init=MovingMesh_init(meshPoint,meshElement,freeMeshLabel,MoveBDYPoint,fixedBDYPoint,movingPara,Parallel=true)#扭转弹簧法作为网格预变形算法
+#初始化参量字典构建
+initParams=paramsInit(meshElement,meshElement_init,u_init,K1_Init,K2_Init,K3_Init)
+Points,Meshs=MovingMesh(meshPoint,meshElement,MoveBDYPoint,fixedBDYPoint,movingPara,initParams,Parallel=true)
+showWholeMesh(Points,Meshs,color="#9090C5")
+#对比扭转弹簧
+Points,Meshs=MovingMesh_Torsion(meshPoint,meshElement,1,MoveBDYPoint,fixedBDYPoint,movingPara,Parallel=true)
+showWholeMesh(Points,Meshs,color="#9090C5")
